@@ -18,6 +18,10 @@ service PixBuscaGrpcService {
   rpc busca(BuscaChavePixRequest) returns (BuscaChavePixResponse) {}
 }
 
+service PixListaGrpcService {
+  rpc lista(ListaChavesPixRequest) returns (ListaChavesPixResponse) {}
+}
+
 /*
 *! Registra Chave Pix:
 */
@@ -95,4 +99,24 @@ message BuscaChavePixResponse {
   string pixId = 1;
   string clienteId = 2;
   Chave dadosChave = 3;
+}
+
+/*
+*! Lista as Chaves Pix:
+*/
+message ListaChavesPixRequest {
+  string clienteId = 1;
+}
+
+message ListaChavesPixResponse {
+  message Chave {
+    string pixId = 1;
+    ChaveEnum tipoChave = 3;
+    string chave = 4;
+    ContaEnum tipoConta = 5;
+    google.protobuf.Timestamp criadaEm = 6;
+  }
+
+  string clienteId = 1;
+  repeated Chave chaves = 2;
 }

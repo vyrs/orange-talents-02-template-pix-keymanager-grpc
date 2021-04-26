@@ -14,6 +14,10 @@ service PixDeletaGrpcService {
   rpc deleta(DeletaChavePixRequest) returns (DeletaChavePixResponse) {}
 }
 
+service PixBuscaGrpcService {
+  rpc busca(BuscaChavePixRequest) returns (BuscaChavePixResponse) {}
+}
+
 /*
 *! Registra Chave Pix:
 */
@@ -54,4 +58,41 @@ message DeletaChavePixRequest {
 message DeletaChavePixResponse {
   string pixId = 1;
   string clientId = 2;
+}
+
+/*
+*! Busca dados Chave Pix:
+*/
+message BuscaChavePixRequest {
+  message FiltroPorPixId {
+    string pixId = 1;
+    string clienteId = 2;
+  }
+
+  oneof filtro {
+    FiltroPorPixId pixId = 1;
+    string chave = 2;
+  }
+}
+
+message BuscaChavePixResponse {
+  message Chave {
+    ChaveEnum tipoChave = 1;
+    string chave = 2;
+    ContaEnum tipoConta = 3;
+    Conta conta = 4;
+    google.protobuf.Timestamp criadaEm = 5;
+
+    message Conta {
+      string instituicao = 1;
+      string nomeTitular = 2;
+      string cpfTitular = 3;
+      string agencia = 4;
+      string numeroConta = 5;
+    }
+  }
+
+  string pixId = 1;
+  string clienteId = 2;
+  Chave dadosChave = 3;
 }
